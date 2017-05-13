@@ -12,14 +12,20 @@ import {
 } from 'react-native';
 
 import firebaseApp from './src/services/Firebase';
+import { Scene, Router, ActionConst } from 'react-native-router-flux';
+
 import Login from './src/components/login/Login';
+import Test from './src/components/test/Test';
 
 export default class bookie extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Login />
-      </View>
+      <Router>
+        <Scene key="root">
+          <Scene key="test" component={Test} title="Test" initial={true} hideNavBar={false} />
+          <Scene key="login" component={Login} title="Login" type={ActionConst.RESET} hideNavBar />
+        </Scene>
+      </Router>
     );
   }
 }

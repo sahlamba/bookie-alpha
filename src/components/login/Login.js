@@ -9,6 +9,7 @@ import {
 
 import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk';
 import firebase from 'firebase';
+import { Actions, ActionConst } from 'react-native-router-flux';
 
 import styles from '../../styles/Login';
 
@@ -64,6 +65,7 @@ export default class Login extends Component {
       })
       .then((userCredData) => {
         console.log('Connected to Firebase.');
+        Actions.test({type: ActionConst.RESET});
       })
       .catch((err) => {
         console.error(err);
@@ -80,6 +82,11 @@ export default class Login extends Component {
           readPermissions={reqdPermissions}
           onLoginFinished={this.login}
           onLogoutFinished={this.logout} />
+        <Text
+          style={{margin: 36}}
+          onPress={() => {Actions.test({type: ActionConst.RESET})}}>
+          Go to Test page.
+        </Text>
       </View>
     );
   }
