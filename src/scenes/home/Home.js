@@ -33,6 +33,9 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text onPress={Actions.login}>
+          Login Screen
+        </Text>
         <Image
           style={{width: 80, height: 80, borderRadius: 40, marginBottom: 20}}
           source={{uri: this.state.currentUser.photoUrl}} />

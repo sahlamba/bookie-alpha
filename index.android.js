@@ -43,7 +43,9 @@ export default class bookie extends Component {
       Actions.pop('statusModal');
     } else {
       Actions.statusModal({
-        message: 'Woah! You should really connect to the Internet.'
+        message: 'Woah! You should really connect to the Internet.',
+        statusType: 'error',
+        autoDismiss: false
       });
     }
   };

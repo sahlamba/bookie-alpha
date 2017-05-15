@@ -2,7 +2,7 @@
 
 const design = {
   colors: {
-    primary: '#8800AA'
+    primary: '#3B5998',
   },
   font: {
     small: 16,

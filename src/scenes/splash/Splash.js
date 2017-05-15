@@ -45,7 +45,9 @@ export default class Splash extends Component {
           });
       } else {
         Actions.statusModal({
-          message: 'Woah! You should really connect to the Internet.'
+          message: 'Woah! You should really connect to the Internet.',
+          statusType: 'error',
+          autoDismiss: false
         });
       }
     });

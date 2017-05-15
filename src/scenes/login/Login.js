@@ -33,11 +33,15 @@ export default class Login extends Component {
   _login(error, result) {
     if (error) {
       Actions.statusModal({
-        message: 'Oops! There was a problem logging into Facebook. Try again later.'
+        message: 'Oops! There was a problem logging into Facebook. Try again later.',
+        statusType: 'error',
+        autoDismiss: false
       });
     } else if (result.isCancelled) {
       Actions.statusModal({
-        message: 'You need to log into Facebook to start using the app.'
+        message: 'You need to log into Facebook to start using the app.',
+        statusType: 'info',
+        autoDismiss: true
       });
     } else {
       this._getAccessTokenFromFB();
@@ -47,8 +51,11 @@ export default class Login extends Component {
   _logout() {
     AsyncStorage.removeItem(config.ACCESS_TOKEN_KEY)
       .then(() => {
+        Actions.login();
         Actions.statusModal({
-          message: 'You were successfully logged out!'
+          message: 'You were successfully logged out!',
+          statusType: 'success',
+          autoDismiss: true
         });
       })
       .catch((err) => {
