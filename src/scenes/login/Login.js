@@ -1,5 +1,6 @@
 /* @flow */
 
+// Core
 import React, { Component } from 'react';
 import {
   Alert,
@@ -7,12 +8,15 @@ import {
   Text,
 } from 'react-native';
 
+// 3rd Pary
 import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk';
-import firebase from 'firebase';
 import { Actions, ActionConst } from 'react-native-router-flux';
+import firebase from 'firebase';
 
-import styles from '../../styles/Login';
+// Styles
+import styles from '../../styles/scenes/Login';
 
+// Constants
 const reqdPermissions = ["email", "public_profile"];
 const auth = firebase.auth();
 const provider = firebase.auth.FacebookAuthProvider;

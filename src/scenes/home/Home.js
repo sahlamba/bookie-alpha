@@ -11,12 +11,12 @@ import {
 import FBSDK, { AccessToken } from 'react-native-fbsdk';
 import firebase from 'firebase';
 import { Actions, ActionConst } from 'react-native-router-flux';
-import styles from '../../styles/Test';
+import styles from '../../styles/scenes/Home';
 
 const auth = firebase.auth();
 const provider = firebase.auth.FacebookAuthProvider;
 
-export default class Test extends Component {
+export default class Home extends Component {
 
   constructor(props) {
     super(props);

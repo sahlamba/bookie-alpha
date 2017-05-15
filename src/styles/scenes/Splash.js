@@ -4,6 +4,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import design from '../Design';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -11,9 +13,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   appTitle: {
+    color: '#444444',
+    fontSize: design.font.title,
+    marginBottom: design.font.small,
+  },
+  loading: {
     color: '#666666',
-    fontSize: 36,
-    marginBottom: 72,
+    fontSize: design.font.small,
   },
 });
 

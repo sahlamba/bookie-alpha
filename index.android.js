@@ -4,26 +4,60 @@
  * @flow
  */
 
+// Core
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
+  StatusBar,
+  NetInfo,
   View,
 } from 'react-native';
 
-import firebaseApp from './src/services/Firebase';
-import { Scene, Router, ActionConst } from 'react-native-router-flux';
+// 3rd Party
+import { Router, Scene, Actions, ActionConst, Modal } from 'react-native-router-flux';
 
-import Login from './src/components/login/Login';
-import Test from './src/components/test/Test';
+// App
+import firebaseApp from './src/services/Firebase';
+import StatusModal from './src/components/StatusModal';
+import Splash from './src/scenes/splash/Splash';
+import Login from './src/scenes/login/Login';
+import Home from './src/scenes/home/Home';
 
 export default class bookie extends Component {
+  constructor(props) {
+    super(props);
+    this._handleConnectionChange = this._handleConnectionChange.bind(this);
+  }
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
+  }
+
+  _handleConnectionChange(isConnected) {
+    if (isConnected) {
+      Actions.pop('statusModal');
+    } else {
+      Actions.statusModal({
+        message: 'Woah! You should really connect to the Internet.'
+      });
+    }
+  };
+
   render() {
     return (
       <Router>
-        <Scene key="root">
-          <Scene key="test" component={Test} title="Test" initial={true} hideNavBar={false} />
-          <Scene key="login" component={Login} title="Login" type={ActionConst.RESET} hideNavBar />
+        <Scene key="modal" component={Modal} >
+          <Scene key="root">
+            <Scene key="splash" component={Splash} title="Welcome" initial={true} hideNavBar />
+            <Scene key="login" component={Login} title="Login" type={ActionConst.RESET} hideNavBar />
+            <Scene key="home" component={Home} title="Explore" hideNavBar={false} />
+          </Scene>
+          <Scene key="statusModal" component={StatusModal} />
         </Scene>
       </Router>
     );
@@ -35,7 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
   }
 });
 
