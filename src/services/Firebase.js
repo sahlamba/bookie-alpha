@@ -1,3 +1,5 @@
+/* @flow */
+
 import * as firebase from 'firebase';  // Initialize Firebase
 const fireBaseconfig = {
   apiKey: "AIzaSyDD7-EsdG9pVNV542aQFNodDxsh5kIjAKY",

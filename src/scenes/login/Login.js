@@ -3,9 +3,9 @@
 // Core
 import React, { Component } from 'react';
 import {
-  Alert,
   View,
   Text,
+  AsyncStorage,
 } from 'react-native';
 
 // 3rd Pary
@@ -16,60 +16,60 @@ import firebase from 'firebase';
 // Styles
 import styles from '../../styles/scenes/Login';
 
-// Constants
+// Config & Constants
+import config from '../../services/Config';
 const reqdPermissions = ["email", "public_profile"];
 const auth = firebase.auth();
 const provider = firebase.auth.FacebookAuthProvider;
 
 export default class Login extends Component {
-
   constructor(props) {
     super(props);
-    this.getAccessToken = this.getAccessToken.bind(this);
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
+    this._getAccessTokenFromFB = this._getAccessTokenFromFB.bind(this);
+    this._login = this._login.bind(this);
+    this._logout = this._logout.bind(this);
   }
 
-  login(error, result) {
+  _login(error, result) {
     if (error) {
-      Alert.alert("Error!", "Login failed! Error: " + result.error, [
-        {
-          text: 'OK', onPress: () => console.log('OK pressed.')
-        }
-      ]);
+      Actions.statusModal({
+        message: 'Oops! There was a problem logging into Facebook. Try again later.'
+      });
     } else if (result.isCancelled) {
-      Alert.alert("Login was cancelled.", "", [
-        {
-          text: 'OK', onPress: () => console.log('OK pressed.')
-        }
-      ]);
+      Actions.statusModal({
+        message: 'You need to log into Facebook to start using the app.'
+      });
     } else {
-      Alert.alert("Login successful!", "", [
-        {
-          text: 'OK', onPress: () => console.log('OK pressed.')
-        }
-      ]);
-      this.getAccessToken();
+      this._getAccessTokenFromFB();
     }
   }
 
-  logout() {
-    Alert.alert("Successfully logged out!", "", [
-      {
-        text: 'OK', onPress: () => console.log('OK pressed.')
-      }
-    ]);
+  _logout() {
+    AsyncStorage.removeItem(config.ACCESS_TOKEN_KEY)
+      .then(() => {
+        Actions.statusModal({
+          message: 'You were successfully logged out!'
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
-  getAccessToken() {
+  _getAccessTokenFromFB() {
     AccessToken.getCurrentAccessToken()
       .then((token) => {
-        const credential = provider.credential(token.accessToken);
-        return auth.signInWithCredential(credential);
-      })
-      .then((userCredData) => {
-        console.log('Connected to Firebase.');
-        Actions.test({type: ActionConst.RESET});
+        if (token) {
+          // Save Access Token to Async Storage
+          AsyncStorage.setItem(config.ACCESS_TOKEN_KEY, token.accessToken)
+            .then(() => {
+              // Go to Home
+              Actions.home({type: ActionConst.RESET});
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -84,13 +84,8 @@ export default class Login extends Component {
         </Text>
         <LoginButton
           readPermissions={reqdPermissions}
-          onLoginFinished={this.login}
-          onLogoutFinished={this.logout} />
-        <Text
-          style={{margin: 36}}
-          onPress={() => {Actions.test({type: ActionConst.RESET})}}>
-          Go to Test page.
-        </Text>
+          onLoginFinished={this._login}
+          onLogoutFinished={this._logout} />
       </View>
     );
   }

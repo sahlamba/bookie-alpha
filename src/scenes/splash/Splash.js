@@ -16,7 +16,8 @@ import firebase from 'firebase';
 // Styles
 import styles from '../../styles/scenes/Splash';
 
-// Constants
+// Config & Constants
+import config from '../../services/Config';
 const auth = firebase.auth();
 const provider = firebase.auth.FacebookAuthProvider;
 
@@ -29,7 +30,19 @@ export default class Splash extends Component {
     // Check for active net connection
     NetInfo.isConnected.fetch().then((isConnected) => {
       if (isConnected) {
-        
+        AsyncStorage.getItem(config.ACCESS_TOKEN_KEY)
+          .then((token) => {
+            if (token) {
+              // Go to Home
+              Actions.home({type: ActionConst.RESET});
+            } else {
+              // Redirect to Login
+              Actions.login();
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       } else {
         Actions.statusModal({
           message: 'Woah! You should really connect to the Internet.'

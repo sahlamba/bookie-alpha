@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   appTitle: {
-    color: '#666666',
+    color: '#444444',
     fontSize: design.font.title,
-    marginBottom: 72,
+    marginBottom: design.font.small,
   },
 });
 
