@@ -1,6 +1,7 @@
 /* @flow */
 
 import {
+  Dimensions,
   StyleSheet,
 } from 'react-native';
 
@@ -11,9 +12,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: '#666666',
+    color: '#AAAAAA',
     fontSize: 16,
-    margin: 36,
+    textAlign: 'center',
+  },
+  details: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  camera: {
+    flex: 3,
+    alignSelf: 'stretch',
   },
 });
 
